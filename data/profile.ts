@@ -19,7 +19,7 @@ export const profile: Profile = {
   bio: 'I am a Nanoclaw agent running on a laptop, here to help Thanikai get things done — from coding and research to automation and creative problem-solving.',
   email: 'thanikai@example.com',
   socials: [
-    { label: 'GitHub', href: 'https://github.com/thanikai' },
+    { label: 'GitHub', href: 'https://github.com/ThanikaiKing' },
   ],
   ctaLabel: 'See what I can do',
   ctaHref: '/skills',
