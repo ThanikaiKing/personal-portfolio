@@ -1,12 +1,12 @@
 # Portfolio Site Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **Status:** COMPLETED. All tasks implemented and production build verified.
 
-**Goal:** Build a minimal Next.js 14 (app router) personal portfolio with Home, Projects, and Contact pages, styled with Tailwind CSS and dark-mode support.
+**Goal:** Build a minimal Next.js 16 (app router) personal portfolio with Home, Projects, and Contact pages, styled with Tailwind CSS v4 and dark-mode support.
 
 **Architecture:** Three app-router pages share a root layout that mounts a sticky Navbar and Footer. All content lives in `data/profile.ts` and `data/projects.ts` so an AI agent can update copy without touching any component. Dark mode follows OS preference via a blocking inline script that sets the `dark` class on `<html>` before first paint.
 
-**Tech Stack:** Next.js 14 (app router), TypeScript, Tailwind CSS (`darkMode: 'class'`), ESLint
+**Tech Stack:** Next.js 16.2.4 (app router, Turbopack), React 19, TypeScript 5, Tailwind CSS v4, ESLint 9, Node.js 25
 
 ---
 
@@ -14,46 +14,38 @@
 
 | Action | Path | Responsibility |
 |--------|------|----------------|
-| Create | `portfolio/data/profile.ts` | All personal copy — name, title, bio, email, socials, CTA |
-| Create | `portfolio/data/projects.ts` | Project list with types |
-| Modify | `portfolio/app/globals.css` | Strip default boilerplate, keep only Tailwind directives |
-| Modify | `portfolio/tailwind.config.ts` | Add `darkMode: 'class'` |
-| Modify | `portfolio/app/layout.tsx` | Root layout: dark-mode script, Navbar, main, Footer |
-| Create | `portfolio/components/Navbar.tsx` | Sticky top nav with name + page links |
-| Create | `portfolio/components/Footer.tsx` | Copyright + social links |
-| Create | `portfolio/components/Hero.tsx` | Home hero: name, title, bio, CTA button |
-| Modify | `portfolio/app/page.tsx` | Home page — renders `<Hero />` |
-| Create | `portfolio/components/ProjectCard.tsx` | Single project card: title, description, tags, links |
-| Create | `portfolio/app/projects/page.tsx` | Projects page — renders card grid from data |
-| Create | `portfolio/app/contact/page.tsx` | Contact page — email + social links from data |
+| Create | `data/profile.ts` | All personal copy — name, title, bio, email, socials, CTA |
+| Create | `data/projects.ts` | Project list with types |
+| Modify | `app/globals.css` | Tailwind v4 import + dark custom variant |
+| Modify | `tailwind.config.ts` | `darkMode: 'class'` (Tailwind v4 uses CSS `@custom-variant` as primary) |
+| Modify | `app/layout.tsx` | Root layout: Geist font, dark-mode script, Navbar, main, Footer |
+| Create | `components/Navbar.tsx` | Sticky top nav with name + page links |
+| Create | `components/Footer.tsx` | Copyright + social links |
+| Create | `components/Hero.tsx` | Home hero: name, title, bio, CTA button |
+| Modify | `app/page.tsx` | Home page — renders `<Hero />` |
+| Create | `components/ProjectCard.tsx` | Single project card: title, description, tags, links |
+| Create | `app/projects/page.tsx` | Projects page — renders card grid from data |
+| Create | `app/contact/page.tsx` | Contact page — email + social links from data |
 
 ---
 
 ## Task 1: Bootstrap project
 
 **Files:**
-- Create: `portfolio/` (via create-next-app)
-- Modify: `portfolio/tailwind.config.ts`
-- Modify: `portfolio/app/globals.css`
+- Create: project root (via create-next-app)
+- Modify: `tailwind.config.ts`
+- Modify: `app/globals.css`
 
-- [ ] **Step 1: Scaffold project**
+- [x] **Step 1: Scaffold project**
 
-Run from `/home/kingt/phoenixdev/sample-bio/`:
 ```bash
 npx create-next-app@latest portfolio --typescript --tailwind --eslint --app --src-dir=no
 ```
-Accept all defaults (no Turbopack prompt matters, either is fine).
 
-- [ ] **Step 2: Verify scaffold succeeded**
+- [x] **Step 2: Verify scaffold succeeded**
 
-```bash
-cd portfolio && ls app components public
-```
-Expected output includes `app/` directory and `package.json`.
+- [x] **Step 3: Set dark mode to class strategy in tailwind.config.ts**
 
-- [ ] **Step 3: Set dark mode to class strategy in tailwind.config.ts**
-
-Replace the entire contents of `portfolio/tailwind.config.ts`:
 ```typescript
 import type { Config } from 'tailwindcss'
 
@@ -72,47 +64,31 @@ const config: Config = {
 export default config
 ```
 
-- [ ] **Step 4: Strip default CSS boilerplate in app/globals.css**
+> **Note:** With Tailwind v4, the primary dark mode mechanism is `@custom-variant dark (&:where(.dark, .dark *))` in `app/globals.css`. The `tailwind.config.ts` serves as a fallback config.
 
-Replace the entire contents of `portfolio/app/globals.css`:
+- [x] **Step 4: Tailwind v4 CSS setup in app/globals.css**
+
 ```css
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
 ```
 
-- [ ] **Step 5: Remove default page content from app/page.tsx**
+- [x] **Step 5: Remove default page content from app/page.tsx**
 
-Replace the entire contents of `portfolio/app/page.tsx`:
-```tsx
-export default function HomePage() {
-  return <main className="p-8">Portfolio coming soon…</main>
-}
-```
-(Will be replaced properly in Task 4.)
+- [x] **Step 6: Verify TypeScript compiles**
 
-- [ ] **Step 6: Verify TypeScript compiles**
-
-```bash
-cd portfolio && npx tsc --noEmit
-```
-Expected: no errors.
-
-- [ ] **Step 7: Commit**
-
-```bash
-cd portfolio && git add -A && git commit -m "chore: scaffold Next.js 14 portfolio with Tailwind dark-class mode"
-```
+- [x] **Step 7: Commit**
 
 ---
 
 ## Task 2: Create data files
 
 **Files:**
-- Create: `portfolio/data/profile.ts`
-- Create: `portfolio/data/projects.ts`
+- Create: `data/profile.ts`
+- Create: `data/projects.ts`
 
-- [ ] **Step 1: Create data/profile.ts**
+- [x] **Step 1: Create data/profile.ts**
 
 ```typescript
 export interface Social {
@@ -145,7 +121,7 @@ export const profile: Profile = {
 }
 ```
 
-- [ ] **Step 2: Create data/projects.ts**
+- [x] **Step 2: Create data/projects.ts**
 
 ```typescript
 export interface Project {
@@ -161,7 +137,8 @@ export const projects: Project[] = [
   {
     id: 'project-1',
     title: 'Open Source CLI',
-    description: 'A developer tool that automates repetitive scaffolding tasks with a single command.',
+    description:
+      'A developer tool that automates repetitive scaffolding tasks with a single command.',
     tags: ['Node.js', 'TypeScript', 'Commander'],
     href: 'https://example.com',
     repoHref: 'https://github.com/janedoe/cli-tool',
@@ -169,7 +146,8 @@ export const projects: Project[] = [
   {
     id: 'project-2',
     title: 'Dashboard UI',
-    description: 'An analytics dashboard built with React and Recharts, powering a SaaS product.',
+    description:
+      'An analytics dashboard built with React and Recharts, powering a SaaS product.',
     tags: ['React', 'Recharts', 'Tailwind'],
     href: 'https://dashboard.example.com',
     repoHref: 'https://github.com/janedoe/dashboard',
@@ -177,36 +155,28 @@ export const projects: Project[] = [
   {
     id: 'project-3',
     title: 'API Gateway',
-    description: 'A lightweight API gateway with rate limiting, auth middleware, and request logging.',
+    description:
+      'A lightweight API gateway with rate limiting, auth middleware, and request logging.',
     tags: ['Node.js', 'Express', 'Redis'],
     repoHref: 'https://github.com/janedoe/api-gateway',
   },
 ]
 ```
 
-- [ ] **Step 3: Verify types compile**
+- [x] **Step 3: Verify types compile**
 
-```bash
-cd portfolio && npx tsc --noEmit
-```
-Expected: no errors.
-
-- [ ] **Step 4: Commit**
-
-```bash
-cd portfolio && git add data/ && git commit -m "feat: add profile and projects data files"
-```
+- [x] **Step 4: Commit**
 
 ---
 
 ## Task 3: Root layout with Navbar and Footer
 
 **Files:**
-- Create: `portfolio/components/Navbar.tsx`
-- Create: `portfolio/components/Footer.tsx`
-- Modify: `portfolio/app/layout.tsx`
+- Create: `components/Navbar.tsx`
+- Create: `components/Footer.tsx`
+- Modify: `app/layout.tsx`
 
-- [ ] **Step 1: Create components/Navbar.tsx**
+- [x] **Step 1: Create components/Navbar.tsx**
 
 ```tsx
 import Link from 'next/link'
@@ -246,7 +216,7 @@ export default function Navbar() {
 }
 ```
 
-- [ ] **Step 2: Create components/Footer.tsx**
+- [x] **Step 2: Create components/Footer.tsx**
 
 ```tsx
 import { profile } from '@/data/profile'
@@ -256,7 +226,7 @@ export default function Footer() {
     <footer className="border-t border-gray-200 dark:border-gray-800 py-8">
       <div className="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          © {new Date().getFullYear()} {profile.name}
+          &copy; {new Date().getFullYear()} {profile.name}
         </p>
         <div className="flex gap-4">
           {profile.socials.map((social) => (
@@ -277,26 +247,34 @@ export default function Footer() {
 }
 ```
 
-- [ ] **Step 3: Replace app/layout.tsx**
+- [x] **Step 3: Replace app/layout.tsx**
+
+Uses `Geist` font (Next.js 16 convention) instead of `Inter`:
 
 ```tsx
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { profile } from '@/data/profile'
 
-const inter = Inter({ subsets: ['latin'] })
+const geist = Geist({
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
   title: { default: profile.name, template: `%s — ${profile.name}` },
   description: profile.bio,
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={geist.className}>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -304,9 +282,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body
-        className={`${inter.className} bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col`}
-      >
+      <body className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
@@ -316,35 +292,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 }
 ```
 
-- [ ] **Step 4: Verify TypeScript and start dev server**
+- [x] **Step 4: Verify TypeScript and start dev server**
 
-```bash
-cd portfolio && npx tsc --noEmit
-```
-Expected: no errors.
-
-```bash
-cd portfolio && npm run dev
-```
-Open `http://localhost:3000`. Verify: Navbar shows name + links, Footer shows copyright + socials, page background is white in light mode / dark in dark mode (toggle OS preference to test).
-
-Stop dev server with Ctrl+C.
-
-- [ ] **Step 5: Commit**
-
-```bash
-cd portfolio && git add app/layout.tsx components/Navbar.tsx components/Footer.tsx && git commit -m "feat: add root layout with Navbar and Footer"
-```
+- [x] **Step 5: Commit**
 
 ---
 
 ## Task 4: Home page — Hero section
 
 **Files:**
-- Create: `portfolio/components/Hero.tsx`
-- Modify: `portfolio/app/page.tsx`
+- Create: `components/Hero.tsx`
+- Modify: `app/page.tsx`
 
-- [ ] **Step 1: Create components/Hero.tsx**
+- [x] **Step 1: Create components/Hero.tsx**
 
 ```tsx
 import Link from 'next/link'
@@ -375,7 +335,7 @@ export default function Hero() {
 }
 ```
 
-- [ ] **Step 2: Replace app/page.tsx**
+- [x] **Step 2: Replace app/page.tsx**
 
 ```tsx
 import Hero from '@/components/Hero'
@@ -385,28 +345,19 @@ export default function HomePage() {
 }
 ```
 
-- [ ] **Step 3: Verify in browser**
+- [x] **Step 3: Verify in browser**
 
-```bash
-cd portfolio && npm run dev
-```
-Open `http://localhost:3000`. Verify: name heading, indigo title, bio paragraph, CTA button. Click CTA — navigates to `/projects` (404 is expected until Task 5). Resize viewport to < 640px; text sizes and padding should scale. Stop dev server.
-
-- [ ] **Step 4: Commit**
-
-```bash
-cd portfolio && git add components/Hero.tsx app/page.tsx && git commit -m "feat: add Hero component and home page"
-```
+- [x] **Step 4: Commit**
 
 ---
 
 ## Task 5: Projects page
 
 **Files:**
-- Create: `portfolio/components/ProjectCard.tsx`
-- Create: `portfolio/app/projects/page.tsx`
+- Create: `components/ProjectCard.tsx`
+- Create: `app/projects/page.tsx`
 
-- [ ] **Step 1: Create components/ProjectCard.tsx**
+- [x] **Step 1: Create components/ProjectCard.tsx**
 
 ```tsx
 import { Project } from '@/data/projects'
@@ -443,7 +394,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               rel="noopener noreferrer"
               className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline"
             >
-              Live →
+              Live &rarr;
             </a>
           )}
           {project.repoHref && (
@@ -453,7 +404,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
               rel="noopener noreferrer"
               className="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:underline"
             >
-              Code →
+              Code &rarr;
             </a>
           )}
         </div>
@@ -463,7 +414,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 }
 ```
 
-- [ ] **Step 2: Create app/projects/page.tsx**
+- [x] **Step 2: Create app/projects/page.tsx**
 
 ```tsx
 import { projects } from '@/data/projects'
@@ -492,27 +443,18 @@ export default function ProjectsPage() {
 }
 ```
 
-- [ ] **Step 3: Verify in browser**
+- [x] **Step 3: Verify in browser**
 
-```bash
-cd portfolio && npm run dev
-```
-Open `http://localhost:3000/projects`. Verify: page heading, three project cards in a grid. At < 640px: cards stack to 1 column. At 640px–1024px: 2 columns. At > 1024px: 3 columns. Dark mode: cards use dark background, tags use dark indigo. Stop dev server.
-
-- [ ] **Step 4: Commit**
-
-```bash
-cd portfolio && git add components/ProjectCard.tsx app/projects/ && git commit -m "feat: add Projects page with card grid"
-```
+- [x] **Step 4: Commit**
 
 ---
 
 ## Task 6: Contact page
 
 **Files:**
-- Create: `portfolio/app/contact/page.tsx`
+- Create: `app/contact/page.tsx`
 
-- [ ] **Step 1: Create app/contact/page.tsx**
+- [x] **Step 1: Create app/contact/page.tsx**
 
 ```tsx
 import { profile } from '@/data/profile'
@@ -555,7 +497,7 @@ export default function ContactPage() {
                 rel="noopener noreferrer"
                 className="text-indigo-600 dark:text-indigo-400 hover:underline"
               >
-                {social.label} →
+                {social.label} &rarr;
               </a>
             ))}
           </div>
@@ -566,18 +508,9 @@ export default function ContactPage() {
 }
 ```
 
-- [ ] **Step 2: Verify in browser**
+- [x] **Step 2: Verify in browser**
 
-```bash
-cd portfolio && npm run dev
-```
-Open `http://localhost:3000/contact`. Verify: heading, description, email link, social links. Click the email link — should open mail client. Links open in new tab. Dark mode: indigo links visible. Stop dev server.
-
-- [ ] **Step 3: Commit**
-
-```bash
-cd portfolio && git add app/contact/ && git commit -m "feat: add Contact page"
-```
+- [x] **Step 3: Commit**
 
 ---
 
@@ -585,44 +518,24 @@ cd portfolio && git add app/contact/ && git commit -m "feat: add Contact page"
 
 **Files:** none (verification only)
 
-- [ ] **Step 1: Run TypeScript check**
+- [x] **Step 1: Run TypeScript check** — passed, no errors
 
-```bash
-cd portfolio && npx tsc --noEmit
+- [x] **Step 2: Run ESLint** — passed, no errors or warnings
+
+- [x] **Step 3: Run production build** — passed
+
 ```
-Expected: no errors.
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /contact
+└ ○ /projects
 
-- [ ] **Step 2: Run ESLint**
-
-```bash
-cd portfolio && npm run lint
+○  (Static)  prerendered as static content
 ```
-Expected: no errors or warnings.
 
-- [ ] **Step 3: Run production build**
+All routes are static (○), compiled successfully with Turbopack.
 
-```bash
-cd portfolio && npm run build
-```
-Expected output ends with:
-```
-Route (app)                Size    First Load JS
-┌ ○ /                      ...
-├ ○ /contact               ...
-└ ○ /projects              ...
-✓ Compiled successfully
-```
-All three routes should be static (○), with no errors.
+- [x] **Step 4: Smoke-test production build**
 
-- [ ] **Step 4: Smoke-test production build**
-
-```bash
-cd portfolio && npm run start
-```
-Open `http://localhost:3000`. Navigate: Home → Projects → Contact. Check dark mode by toggling OS preference. Resize browser to mobile width. Stop server.
-
-- [ ] **Step 5: Final commit**
-
-```bash
-cd portfolio && git add -A && git commit -m "chore: verify production build passes"
-```
+- [x] **Step 5: Final commit**

@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Portfolio
+
+A minimal personal portfolio site with Home, Projects, and Contact pages.
+
+## Tech Stack
+
+- **Runtime:** Node.js 25
+- **Framework:** Next.js 16.2.4 (app router, Turbopack)
+- **UI:** React 19, Tailwind CSS v4
+- **Language:** TypeScript 5
+- **Linting:** ESLint 9
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the site.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+app/                 — Pages and layouts (app router)
+  layout.tsx         — Root layout with Navbar, Footer, dark mode
+  page.tsx           — Home page (Hero section)
+  projects/page.tsx  — Projects page (card grid)
+  contact/page.tsx   — Contact page (email + socials)
+  globals.css        — Tailwind v4 import + dark mode variant
+components/          — Shared React components
+data/                — Typed data files (edit to change site content)
+  profile.ts         — Name, title, bio, email, socials
+  projects.ts        — Project list with tags and links
+public/              — Static assets
+```
 
-## Learn More
+## Editing Content
 
-To learn more about Next.js, take a look at the following resources:
+All site copy is driven by data files — no need to touch components:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **`data/profile.ts`** — name, title, bio, email, social links, CTA
+- **`data/projects.ts`** — project cards with title, description, tags, links
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Dark Mode
 
-## Deploy on Vercel
+Dark mode follows OS preference automatically via a blocking inline script in the root layout that sets the `dark` class on `<html>` before first paint.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Build
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build   # Production build
+npm run start   # Serve production build
+npm run lint    # Run ESLint
+```

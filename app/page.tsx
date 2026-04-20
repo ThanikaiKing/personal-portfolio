@@ -1,3 +1,5 @@
+import Hero from '@/components/Hero'
+
 export default function HomePage() {
-  return <main className="p-8">Portfolio coming soon…</main>
+  return <Hero />
 }
