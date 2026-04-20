@@ -3,7 +3,7 @@ import { profile } from '@/data/profile'
 
 const navLinks = [
   { label: 'Home', href: '/' },
-  { label: 'Projects', href: '/projects' },
+  { label: 'Skills', href: '/skills' },
   { label: 'Contact', href: '/contact' },
 ]
 

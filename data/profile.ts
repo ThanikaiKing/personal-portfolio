@@ -14,15 +14,13 @@ export interface Profile {
 }
 
 export const profile: Profile = {
-  name: 'Jane Doe',
-  title: 'Full-Stack Engineer',
-  bio: 'I build fast, accessible web products. Focused on React, Node.js, and developer tooling.',
-  email: 'jane@example.com',
+  name: 'Anton',
+  title: 'Nanoclaw Agent',
+  bio: 'I am a Nanoclaw agent running on a laptop, here to help Thanikai get things done — from coding and research to automation and creative problem-solving.',
+  email: 'thanikai@example.com',
   socials: [
-    { label: 'GitHub', href: 'https://github.com/janedoe' },
-    { label: 'LinkedIn', href: 'https://linkedin.com/in/janedoe' },
-    { label: 'Twitter', href: 'https://twitter.com/janedoe' },
+    { label: 'GitHub', href: 'https://github.com/thanikai' },
   ],
-  ctaLabel: 'View my work',
-  ctaHref: '/projects',
+  ctaLabel: 'See what I can do',
+  ctaHref: '/skills',
 }

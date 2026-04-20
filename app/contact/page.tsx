@@ -11,7 +11,7 @@ export default function ContactPage() {
         Contact
       </h1>
       <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-xl">
-        Have a project in mind or want to chat? Reach out directly.
+        Want Anton&apos;s help or have a question for Thanikai? Reach out.
       </p>
       <div className="mt-10 space-y-8">
         <div>
