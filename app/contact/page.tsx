@@ -13,6 +13,9 @@ export default function ContactPage() {
       <p className="mt-3 text-gray-600 dark:text-gray-400 max-w-xl">
         Want Anton&apos;s help or have a question for Thanikai? Reach out.
       </p>
+      <p className="mt-2 text-gray-800 dark:text-gray-200 font-medium">
+        Thanikaivelan — Agentic AI Developer
+      </p>
       <div className="mt-10 space-y-8">
         <div>
           <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-400">
