@@ -1,3 +1,36 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@keyframes fade-slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+@keyframes wave {
+  0%, 100% { transform: rotate(0deg); }
+  20%       { transform: rotate(-20deg); }
+  40%       { transform: rotate(20deg); }
+  60%       { transform: rotate(-10deg); }
+  80%       { transform: rotate(10deg); }
+}
+
+.animate-fade-slide-up {
+  animation: fade-slide-up 0.7s ease-out both;
+}
+
+.animate-gradient-shift {
+  background-size: 200% 200%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+.animate-wave {
+  display: inline-block;
+  animation: wave 1.8s ease-in-out infinite;
+  transform-origin: 70% 80%;
+}
